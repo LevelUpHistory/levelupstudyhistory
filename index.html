@@ -1,0 +1,1506 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>History Level Up</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --panel:rgba(255,255,255,.92);
+      --soft:rgba(246,247,251,.96);
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#e5e7eb;
+      --shadow:0 16px 36px rgba(15,23,42,.10);
+      --r:18px;
+
+      --blue:#2563eb;
+      --teal:#14b8a6;
+      --rose:#f43f5e;
+      --green:#22c55e;
+
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(900px 600px at 15% -10%, rgba(37,99,235,.12), transparent 60%),
+        radial-gradient(850px 600px at 100% 0%, rgba(20,184,166,.12), transparent 55%),
+        radial-gradient(900px 700px at 0% 105%, rgba(244,63,94,.08), transparent 55%),
+        var(--bg);
+      min-height:100vh;
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:22px 16px 44px}
+    header{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;
+      padding:8px 2px 16px;
+    }
+    .brand h1{margin:0;font-size:26px;letter-spacing:.2px}
+    .brand p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.35;max-width:820px}
+
+    .tabs{
+      display:flex;gap:10px;align-items:center;flex-wrap:nowrap;
+      background:rgba(255,255,255,.90);
+      border:1px solid var(--line);
+      padding:8px;
+      border-radius:999px;
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      max-width:100%;
+    }
+    .tab{
+      border:1px solid transparent;
+      background:transparent;
+      color:var(--text);
+      padding:9px 12px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:900;
+      font-size:13px;
+      white-space:nowrap;
+      transition:.15s ease;
+      flex:0 0 auto;
+    }
+    .tab:hover{border-color: rgba(37,99,235,.25)}
+    .tab.active{
+      background: rgba(37,99,235,.12);
+      border-color: rgba(37,99,235,.28);
+      color: var(--blue);
+    }
+
+    .grid{display:grid;grid-template-columns:1.35fr .65fr;gap:16px}
+    @media (max-width: 940px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--r);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .head{
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+    }
+    .head h2{margin:0;font-size:15px}
+    .sub{color:var(--muted);font-size:12px}
+    .body{padding:16px}
+
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .pill{
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted);
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:var(--soft);
+      white-space:nowrap;
+    }
+
+    .btn{
+      cursor:pointer;
+      border:1px solid rgba(37,99,235,.25);
+      background: rgba(37,99,235,.10);
+      color: var(--blue);
+      padding:10px 12px;
+      border-radius: 12px;
+      font-weight:900;
+      font-size:13px;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .btn:hover{transform: translateY(-1px); border-color: rgba(37,99,235,.35)}
+    .btn:active{transform: translateY(0)}
+    .btn.secondary{
+      color: var(--text);
+      border-color: var(--line);
+      background: var(--soft);
+    }
+    .btn.good{
+      color:#065f46;
+      border-color: rgba(34,197,94,.25);
+      background: rgba(34,197,94,.10);
+    }
+    .btn.danger{
+      color:#9f1239;
+      border-color: rgba(244,63,94,.25);
+      background: rgba(244,63,94,.10);
+    }
+    .btn.small{padding:7px 10px;border-radius:10px;font-size:12px}
+
+    .inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    @media (max-width: 520px){.inputs{grid-template-columns:1fr}}
+    label{font-size:12px;color:var(--muted);display:block;margin:0 0 6px 2px}
+    input[type="text"], select, textarea{
+      width:100%;
+      padding:11px 12px;
+      border-radius: 12px;
+      border:1px solid var(--line);
+      background: var(--soft);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:110px;resize:vertical;font-family:var(--sans)}
+    .hr{height:1px;background:var(--line);margin:14px 0}
+
+    .split{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .mini{font-size:12px;color:var(--muted)}
+    .progress{
+      height:10px;border-radius:999px;background:rgba(229,231,235,.9);
+      overflow:hidden;border:1px solid var(--line);
+    }
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--teal))}
+
+    /* flashcards */
+    .fc-stage{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius: var(--r);
+      min-height: 260px;
+      padding:14px;
+      background: linear-gradient(180deg, rgba(246,247,251,.98), rgba(255,255,255,.98));
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,.03);
+    }
+    .fc-badge{
+      position:absolute;top:14px;right:14px;
+      font-size:12px;color:var(--muted);
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.96);
+      font-family:var(--mono);
+    }
+    .knownbar{
+      display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+      padding:10px 12px;border-radius:14px;border:1px solid var(--line);background:var(--soft);
+      margin-top:12px;
+    }
+    .tag{
+      font-size:12px;padding:5px 10px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.96);color:var(--muted);
+      white-space:nowrap;
+    }
+    .tag.good{border-color: rgba(34,197,94,.25); background: rgba(34,197,94,.10); color:#065f46}
+    .tag.bad{border-color: rgba(244,63,94,.25); background: rgba(244,63,94,.10); color:#9f1239}
+
+    /* flip */
+    .flip{perspective: 1200px;min-height: 220px}
+    .flip-inner{
+      position:relative;width:100%;min-height: 220px;
+      transform-style:preserve-3d;
+      transition: transform .52s cubic-bezier(.2,.8,.2,1);
+    }
+    .flip-inner.is-flipped{transform: rotateY(180deg)}
+    .flip-face{
+      position:absolute;inset:0;
+      backface-visibility:hidden;-webkit-backface-visibility:hidden;
+      display:flex;flex-direction:column;justify-content:center;
+      padding: 10px 10px 8px;
+    }
+    .flip-back{transform: rotateY(180deg)}
+    .term{font-size:22px;font-weight:950;letter-spacing:.2px;line-height:1.12;margin:6px 0 8px}
+    .definition{font-size:14px;line-height:1.5;white-space:pre-wrap}
+    .fc-tip{margin-top:12px;color:var(--muted);font-size:12px}
+
+    /* test */
+    .q{
+      padding:14px;border-radius:16px;border:1px solid var(--line);
+      background: var(--soft);margin-bottom:12px;
+    }
+    .q .meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    .q .prompt{margin:10px 0 12px;font-size:14px;line-height:1.35}
+    .choices{display:grid;gap:10px}
+    .choice{
+      cursor:pointer;padding:10px 12px;border-radius:12px;border:1px solid var(--line);
+      background: rgba(255,255,255,.98);
+      transition:.12s ease;user-select:none;
+    }
+    .choice:hover{border-color: rgba(37,99,235,.35)}
+    .choice.selected{border-color: rgba(37,99,235,.55); background: rgba(37,99,235,.08)}
+    .choice.correct{border-color: rgba(34,197,94,.55); background: rgba(34,197,94,.10)}
+    .choice.wrong{border-color: rgba(244,63,94,.50); background: rgba(244,63,94,.10)}
+    .result{
+      padding:12px 14px;border-radius:14px;border:1px solid var(--line);
+      background: rgba(255,255,255,.98);display:none;
+    }
+
+    /* questions */
+    .game{
+      border:1px solid var(--line);
+      background: var(--soft);
+      border-radius: var(--r);
+      padding:14px;
+    }
+    .hintBox{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.98);
+      border-radius:16px;
+      padding:14px;
+      min-height: 150px;
+      white-space: pre-wrap;
+      line-height:1.45;
+    }
+    .answerBox{
+      margin-top:10px;
+      border:1px solid rgba(37,99,235,.20);
+      background: rgba(37,99,235,.06);
+      border-radius:16px;
+      padding:12px 14px;
+      display:none;
+    }
+    .answerBox .ansTerm{font-weight:950;margin-bottom:6px}
+    .footer-note{margin-top:12px;font-size:12px;color:var(--muted)}
+    .hide{display:none !important}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1>History Level Up</h1>
+        <p>Flashcards + Practice Test (up to 53) + <strong>Questions</strong> (Hint 1 → Hint 4). Everything saves in your browser.</p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Modes">
+        <button class="tab active" data-view="flashcards" role="tab" aria-selected="true">Flashcards</button>
+        <button class="tab" data-view="test" role="tab" aria-selected="false">Practice Test</button>
+        <button class="tab" data-view="questions" role="tab" aria-selected="false">Questions</button>
+        <button class="tab" data-view="manage" role="tab" aria-selected="false">Manage Cards</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="head">
+          <div>
+            <h2 id="mainTitle">Flashcards</h2>
+            <div class="sub" id="mainSub">Flip with animation, shuffle, and track what you know.</div>
+          </div>
+          <div class="row">
+            <span class="pill" id="deckInfo">Deck: 0 cards</span>
+            <span class="pill" id="modeInfo">Mode: Flashcards</span>
+          </div>
+        </div>
+
+        <div class="body">
+
+          <!-- FLASHCARDS -->
+          <div id="view-flashcards">
+            <div class="fc-stage" id="fcStage">
+              <div class="fc-badge" id="fcBadge">Card 0 / 0</div>
+              <div class="flip">
+                <div class="flip-inner" id="flipInner">
+                  <div class="flip-face">
+                    <div class="term" id="fcFront">—</div>
+                    <div class="fc-tip">Tip: <span class="pill">Space</span> flip • <span class="pill">←</span>/<span class="pill">→</span> move • <span class="pill">K</span> known</div>
+                  </div>
+                  <div class="flip-face flip-back">
+                    <div class="definition" id="fcBack">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:12px">
+              <button class="btn secondary" id="prevBtn">← Prev</button>
+              <button class="btn" id="flipBtn">Flip</button>
+              <button class="btn secondary" id="nextBtn">Next →</button>
+              <button class="btn secondary" id="shuffleBtn">Shuffle</button>
+              <button class="btn danger" id="resetProgressBtn">Reset Progress</button>
+            </div>
+
+            <div class="knownbar">
+              <div class="row" style="gap:8px">
+                <input type="checkbox" id="knownToggle" />
+                <label for="knownToggle" style="margin:0;color:var(--text);font-weight:900">Mark “Known”</label>
+              </div>
+              <span class="tag" id="categoryTag">Category: —</span>
+              <span class="tag" id="knownTag">Status: —</span>
+            </div>
+
+            <div style="margin-top:12px">
+              <div class="split">
+                <div class="mini">Known progress</div>
+                <div class="mini"><span id="knownCount">0</span>/<span id="totalCount">0</span> known</div>
+              </div>
+              <div class="progress"><div class="bar" id="progressBar"></div></div>
+            </div>
+          </div>
+
+          <!-- PRACTICE TEST -->
+          <div id="view-test" class="hide">
+            <div class="row" style="margin-bottom:12px">
+              <button class="btn" id="startTestBtn">Start New Test</button>
+              <button class="btn secondary" id="newSetBtn">New Questions</button>
+              <button class="btn secondary" id="gradeTestBtn">Grade</button>
+            </div>
+
+            <div class="inputs">
+              <div>
+                <label for="testCount"># of Questions</label>
+                <select id="testCount">
+                  <option>5</option><option selected>10</option><option>15</option><option>20</option>
+                  <option>25</option><option>30</option><option>40</option><option>50</option><option>53</option>
+                </select>
+              </div>
+              <div>
+                <label for="testType">Question Type</label>
+                <select id="testType">
+                  <option value="mcq" selected>Multiple Choice (term → definition)</option>
+                  <option value="tf">True / False (facts)</option>
+                  <option value="mixed">Mixed</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+            <div id="testArea"></div>
+
+            <div class="result" id="testResult">
+              <div class="split">
+                <strong id="scoreLine">Score: —</strong>
+                <span class="pill" id="scoreDetail">—</span>
+              </div>
+              <div class="footer-note">Correct answers are green. Wrong selections are red.</div>
+            </div>
+          </div>
+
+          <!-- QUESTIONS -->
+          <div id="view-questions" class="hide">
+            <div class="row" style="margin-bottom:10px">
+              <span class="pill" id="qBadge">Item 0 / 0</span>
+              <span class="pill" id="hintStep">Hint 1 of 4</span>
+            </div>
+
+            <div class="game">
+              <div class="hintBox" id="hintBox">—</div>
+
+              <div class="row" style="margin-top:12px">
+                <button class="btn" id="nextHintBtn">Next Hint</button>
+                <button class="btn secondary" id="revealBtn">Reveal Answer</button>
+                <button class="btn secondary" id="nextItemBtn">Next Item →</button>
+                <button class="btn secondary" id="shuffleQBtn">Shuffle</button>
+                <button class="btn danger" id="resetQBtn">Reset</button>
+              </div>
+
+              <div class="answerBox" id="answerBox">
+                <div class="ansTerm" id="ansTerm">—</div>
+                <div class="definition" id="ansDef">—</div>
+              </div>
+
+              <div class="footer-note">Hint 1 starts vague. Hint 4 is clearest. Reveal anytime to check your guess.</div>
+            </div>
+          </div>
+
+          <!-- MANAGE -->
+          <div id="view-manage" class="hide">
+            <div class="inputs">
+              <div>
+                <label for="searchInput">Search (term/definition)</label>
+                <input id="searchInput" type="text" placeholder="Search… e.g., Odyssey" />
+              </div>
+              <div>
+                <label for="categoryFilter">Category</label>
+                <select id="categoryFilter">
+                  <option value="all" selected>All</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="inputs">
+              <div>
+                <label for="knownFilter">Known filter</label>
+                <select id="knownFilter">
+                  <option value="all" selected>All</option>
+                  <option value="known">Known only</option>
+                  <option value="unknown">Unknown only</option>
+                </select>
+              </div>
+              <div class="row" style="align-items:flex-end">
+                <button class="btn secondary" id="exportBtn">Export JSON</button>
+                <button class="btn secondary" id="importBtn">Import JSON</button>
+                <input id="importFile" type="file" accept="application/json" class="hide" />
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+              <button class="btn danger" id="restoreDeckBtn">Reset Deck (Restore 54)</button>
+            </div>
+
+            <div class="hr"></div>
+
+            <div>
+              <div class="inputs">
+                <div>
+                  <label for="addCategory">Category</label>
+                  <input id="addCategory" type="text" placeholder="e.g., U.S. History" />
+                </div>
+                <div>
+                  <label for="addTerm">Term</label>
+                  <input id="addTerm" type="text" placeholder="e.g., War of 1812" />
+                </div>
+              </div>
+              <div style="margin-top:10px">
+                <label for="addDef">Definition</label>
+                <textarea id="addDef" placeholder="Definition…"></textarea>
+              </div>
+              <div class="row" style="margin-top:10px">
+                <button class="btn good" id="saveCardBtn">Save Card</button>
+                <button class="btn secondary" id="clearFormBtn">Clear</button>
+                <button class="btn danger" id="deleteCardBtn">Delete (exact term)</button>
+              </div>
+              <div class="footer-note">To edit: type the exact Term, change text, and click Save.</div>
+            </div>
+
+            <div class="hr"></div>
+            <div id="listArea"></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SIDEBAR SETTINGS -->
+      <aside class="card">
+        <div class="head">
+          <div>
+            <h2>Study Settings</h2>
+            <div class="sub">These filters affect Flashcards and Practice Test.</div>
+          </div>
+        </div>
+        <div class="body">
+          <div>
+            <label for="studyCategory">Study category</label>
+            <select id="studyCategory">
+              <option value="all" selected>All</option>
+            </select>
+          </div>
+
+          <div style="margin-top:10px">
+            <label for="studyScope">Study scope</label>
+            <select id="studyScope">
+              <option value="all" selected>All cards</option>
+              <option value="unknown">Unknown only</option>
+              <option value="known">Known only</option>
+            </select>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <button class="btn secondary small" id="jumpRandomBtn">Random Card</button>
+            <button class="btn secondary small" id="showAnswerBtn">Show Answer</button>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="mini">
+            Keyboard (Flashcards):
+            <div class="footer-note">
+              <span class="pill">Space</span> flip • <span class="pill">←</span>/<span class="pill">→</span> prev/next • <span class="pill">K</span> known
+            </div>
+          </div>
+
+          <div class="hr"></div>
+          <div class="mini">Tip: Export/Import lets you move your deck to another computer.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    /*****************
+     * STORAGE KEYS (v10)
+     *****************/
+    const STORAGE_KEY = "hlu_deck_v10";
+    const PROGRESS_KEY = "hlu_known_v10";
+
+    /*****************
+     * DEFAULT DECK (54 TERMS)
+     *****************/
+    const DEFAULT_CARDS = [
+      // African History (2)
+      { category:"African History", term:"Witwatersrand Gold Discovery", definition:"The discovery of gold in the Witwatersrand Basin in South Africa helped spark the rapid growth of Johannesburg." },
+      { category:"African History", term:"Menelik II", definition:"Under Menelik II, the Ethiopian Empire expanded to its greatest territorial extent." },
+
+      // Asian History (7)
+      { category:"Asian History", term:"Hammurabi’s Code", definition:"While ruling Babylonia, Hammurabi created one of the earliest and most complete written legal codes." },
+      { category:"Asian History", term:"Indira Gandhi", definition:"Indira Gandhi (1917–1984) was the first female prime minister of India." },
+      { category:"Asian History", term:"Bongbong Marcos", definition:"Bongbong Marcos, the current president of the Philippines, is the son of former dictator Ferdinand Marcos." },
+      { category:"Asian History", term:"Silk Road", definition:"The Silk Road was an ancient trade network linking China with the West, especially known for silk and other goods." },
+      { category:"Asian History", term:"Baghdad", definition:"Baghdad served as the capital of the Abbasid Caliphate and became a major center of learning and culture." },
+      { category:"Asian History", term:"Mao Zedong", definition:"Mao Zedong founded the People’s Republic of China in 1949 and ruled until his death in 1976." },
+      { category:"Asian History", term:"Lee Kuan Yew", definition:"Lee Kuan Yew was Singapore’s first prime minister and is widely credited with building Singapore into a major global economic power." },
+
+      // Ancient History (5)
+      { category:"Ancient History", term:"Sparta", definition:"Sparta was a powerful Greek city-state known for its militaristic society; boys began military training around age seven." },
+      { category:"Ancient History", term:"Alexander the Great", definition:"In 336 BCE, Alexander the Great became king of Macedon after Philip II and later built a vast empire." },
+      { category:"Ancient History", term:"The Odyssey", definition:"The Odyssey is an ancient Greek epic poem attributed to Homer that follows Odysseus on his long journey home after the Trojan War." },
+      { category:"Ancient History", term:"Cyrus the Great", definition:"Cyrus the Great founded the Persian Empire and was known for major conquests and policies of religious tolerance." },
+      { category:"Ancient History", term:"Peloponnesian War", definition:"The Peloponnesian War was a long conflict between Athens and Sparta that lasted from 431 to 404 BCE." },
+
+      // European History (13)
+      { category:"European History", term:"Constantine the Great", definition:"Constantine the Great was the first Roman emperor to convert to Christianity." },
+      { category:"European History", term:"Henry VIII", definition:"Henry VIII broke from the Catholic Church to annul his marriage to Catherine of Aragon and later married Anne Boleyn." },
+      { category:"European History", term:"Battle of the Bulge", definition:"The Battle of the Bulge was the last major German offensive in the West during World War II, fought mostly in Belgium and Luxembourg in December 1944." },
+      { category:"European History", term:"Russo-Ukrainian War", definition:"The Russo-Ukrainian War has been described as the deadliest war in Europe since World War II." },
+      { category:"European History", term:"Leonardo da Vinci", definition:"Leonardo da Vinci was a major Italian Renaissance artist who created works such as the Mona Lisa and The Last Supper." },
+      { category:"European History", term:"Winston Churchill", definition:"Winston Churchill served as prime minister of the United Kingdom during much of World War II." },
+      { category:"European History", term:"Frederick the Great", definition:"Frederick the Great’s long reign helped establish Prussia as a major European power in the 18th century." },
+      { category:"European History", term:"Martin Luther", definition:"Martin Luther sparked the Protestant Reformation after criticizing the sale of indulgences in his Ninety-five Theses." },
+      { category:"European History", term:"Bohemia", definition:"Bohemia is a historic region of Central Europe that is now part of the Czech Republic." },
+      { category:"European History", term:"Battle of Borodino", definition:"The Battle of Borodino, fought in 1812, was a major clash between Napoleon’s army and Russian forces during the invasion of Russia." },
+      { category:"European History", term:"Brexit", definition:"Brexit refers to the United Kingdom’s withdrawal from the European Union, formally completed in 2020." },
+      { category:"European History", term:"Archduke Franz Ferdinand", definition:"The assassination of Archduke Franz Ferdinand in 1914 helped trigger the start of World War I." },
+      { category:"European History", term:"Estado Novo", definition:"Estado Novo was an authoritarian regime in Portugal that lasted from the 1930s into the 1970s under António Salazar." },
+
+      // Latin American History (4)
+      { category:"Latin American History", term:"Juan Perón", definition:"Juan Perón served as president of Argentina from 1946 to 1955 and returned to power in 1973 until his death in 1974." },
+      { category:"Latin American History", term:"Haitian Revolution", definition:"The Haitian Revolution was a successful slave revolt against French colonial rule that led to Haiti’s independence." },
+      { category:"Latin American History", term:"Falklands War", definition:"The Falklands War (1982) was a brief conflict between Argentina and the United Kingdom over the Falkland Islands." },
+      { category:"Latin American History", term:"Juan Ponce de León", definition:"Juan Ponce de León was a Spanish explorer linked with early exploration of Florida and the legend of the Fountain of Youth." },
+
+      // U.S. History (10)
+      { category:"U.S. History", term:"War of 1812", definition:"The War of 1812 was fought between the United States and Great Britain over issues including trade restrictions, impressment of sailors, and territorial expansion." },
+      { category:"U.S. History", term:"George Washington", definition:"George Washington commanded the Continental Army during the American Revolution and later became the first U.S. president." },
+      { category:"U.S. History", term:"Apollo Program", definition:"The Apollo Program was a NASA space program that landed the first humans on the Moon in 1969." },
+      { category:"U.S. History", term:"Iran Hostage Crisis", definition:"During the Iran Hostage Crisis (1979–1981), Iranian militants held 52 American diplomats and citizens hostage in Tehran." },
+      { category:"U.S. History", term:"Zoot Suit Riots", definition:"The Zoot Suit Riots were violent clashes in Los Angeles in 1943 involving U.S. servicemen and Mexican American youths." },
+      { category:"U.S. History", term:"Watergate Scandal", definition:"The Watergate scandal led to the resignation of U.S. President Richard Nixon in 1974." },
+      { category:"U.S. History", term:"Spanish-American War", definition:"Cuba’s struggle for independence was a major factor that helped spark the Spanish-American War." },
+      { category:"U.S. History", term:"Declaration of Independence", definition:"The Declaration of Independence was principally authored by Thomas Jefferson." },
+      { category:"U.S. History", term:"Barack Obama", definition:"Barack Obama was the first African-American president of the United States and used major campaign slogans including “Hope” and “Forward.”" },
+      { category:"U.S. History", term:"Hamilton (Musical)", definition:"Lin-Manuel Miranda’s 2015 musical, Hamilton, dramatizes the life of Alexander Hamilton during the American Revolution; Hamilton also served as the first U.S. Secretary of the Treasury." },
+
+      // World / Canada / Religion / Econ / Other (9)
+      { category:"Economics", term:"Milton Friedman", definition:"Milton Friedman was an influential American economist who advocated free-market capitalism and limited government intervention." },
+      { category:"European History", term:"Volodymyr Zelenskyy", definition:"Volodymyr Zelenskyy was elected president of Ukraine in 2019 and has led the country during the Russo-Ukrainian War." },
+      { category:"Canadian History", term:"Quiet Revolution", definition:"The Quiet Revolution was a period of rapid social and political change in Quebec during the 1960s that reduced the Catholic Church’s influence." },
+      { category:"U.S. History", term:"Five Civilized Tribes", definition:"The term “Five Civilized Tribes” refers to the Cherokee, Chickasaw, Choctaw, Creek, and Seminole, who adopted aspects of European-American culture." },
+      { category:"Soviet History", term:"Glasnost", definition:"Glasnost was a Soviet policy associated with Mikhail Gorbachev that promoted greater openness and transparency in government." },
+      { category:"World History", term:"Great Depression", definition:"The Great Depression was a worldwide economic downturn that began in 1929 and caused severe unemployment and poverty." },
+      { category:"World History", term:"NATO", definition:"NATO (the North Atlantic Treaty Organization) is a military alliance founded in 1949 for collective defense." },
+      { category:"World Religions", term:"Buddhism", definition:"Buddhism is a major world religion founded by Siddhartha Gautama (the Buddha) that teaches a path toward enlightenment through ethical living and meditation." },
+      { category:"European History", term:"René Descartes", definition:"René Descartes was a French philosopher and mathematician often called the father of modern philosophy, famous for the idea “I think, therefore I am.”" },
+
+      // Extra to make 54 (from your list’s sentence structure)
+      { category:"Asian History", term:"Abbasid Caliphate", definition:"The Abbasid Caliphate was an Islamic empire whose capital at Baghdad became a major center of scholarship, culture, and trade." },
+
+      // Oceania (1)
+      { category:"Oceania History", term:"Musket Wars", definition:"The Musket Wars were conflicts in New Zealand between Māori groups in the early 19th century, intensified by the introduction of firearms." },
+
+      // European History (1)
+      { category:"European History", term:"French Revolution", definition:"The French Revolution (1789–1799) was a major political and social upheaval that overthrew the monarchy and reshaped France." },
+    ];
+
+    /*****************
+     * STATE
+     *****************/
+    let cards = [];
+    let knownSet = new Set();
+
+    let studyCategory = "all";
+    let studyScope = "all";
+    let filteredIndexes = [];
+
+    let currentPos = 0;
+    let showingBack = false;
+
+    let testQuestions = [];
+    let testGraded = false;
+
+    // Questions uses ALL terms
+    let qOrder = [];
+    let qPos = 0;
+    let qHintIndex = 0;
+    let qRevealed = false;
+
+    const $ = (id) => document.getElementById(id);
+    const uniq = (arr) => Array.from(new Set(arr));
+    const clamp = (n,a,b) => Math.max(a, Math.min(b, n));
+
+    function cardKey(c){ return `${c.category}::${c.term}`; }
+    function isKnown(c){ return knownSet.has(cardKey(c)); }
+    function saveDeck(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(cards)); }
+    function saveProgress(){ localStorage.setItem(PROGRESS_KEY, JSON.stringify(Array.from(knownSet))); }
+
+    function restoreDefaultDeck(){
+      cards = structuredClone(DEFAULT_CARDS);
+      knownSet = new Set();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify([]));
+      studyCategory = "all";
+      studyScope = "all";
+      currentPos = 0;
+      initQOrder();
+      populateCategorySelects();
+      computeFiltered();
+      renderFlashcard();
+      renderManage();
+      renderQuestions(true);
+      updateBadges();
+    }
+
+    function loadAll(){
+      // Load deck safely. If missing/invalid/empty -> restore default 54 automatically.
+      let parsedDeck = null;
+      try{ parsedDeck = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null"); }
+      catch(e){ parsedDeck = null; }
+
+      if(!Array.isArray(parsedDeck) || parsedDeck.length === 0){
+        cards = structuredClone(DEFAULT_CARDS);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
+      } else {
+        cards = parsedDeck;
+      }
+
+      // Load known progress safely
+      let parsedKnown = [];
+      try{ parsedKnown = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "[]"); }
+      catch(e){ parsedKnown = []; }
+
+      knownSet = new Set(Array.isArray(parsedKnown) ? parsedKnown : []);
+    }
+
+    function setKnown(c, val){
+      const k = cardKey(c);
+      if(val) knownSet.add(k);
+      else knownSet.delete(k);
+      saveProgress();
+    }
+
+    function getCategories(){
+      return uniq(cards.map(c => c.category)).sort((a,b)=>a.localeCompare(b));
+    }
+
+    function computeFiltered(){
+      filteredIndexes = cards
+        .map((c, idx) => ({c, idx}))
+        .filter(({c}) => (studyCategory === "all" ? true : c.category === studyCategory))
+        .filter(({c}) => {
+          if(studyScope === "all") return true;
+          return studyScope === "known" ? isKnown(c) : !isKnown(c);
+        })
+        .map(x => x.idx);
+
+      currentPos = filteredIndexes.length ? clamp(currentPos, 0, filteredIndexes.length - 1) : 0;
+    }
+
+    function currentCard(){
+      if(filteredIndexes.length === 0) return null;
+      return cards[ filteredIndexes[currentPos] ];
+    }
+
+    function updateBadges(){
+      $("deckInfo").textContent = `Deck: ${cards.length} cards`;
+      const mode = document.querySelector(".tab.active")?.textContent?.trim() ?? "—";
+      $("modeInfo").textContent = `Mode: ${mode}`;
+    }
+
+    /************
+     * VIEWS
+     ************/
+    const VIEWS = ["flashcards","test","questions","manage"];
+    function setView(view){
+      for(const v of VIEWS){
+        $("view-" + v).classList.toggle("hide", v !== view);
+      }
+      document.querySelectorAll(".tab").forEach(btn => {
+        const on = btn.dataset.view === view;
+        btn.classList.toggle("active", on);
+        btn.setAttribute("aria-selected", on ? "true" : "false");
+      });
+
+      if(view === "flashcards"){
+        $("mainTitle").textContent = "Flashcards";
+        $("mainSub").textContent = "Flip with animation, shuffle, and track what you know.";
+        renderFlashcard();
+      } else if(view === "test"){
+        $("mainTitle").textContent = "Practice Test";
+        $("mainSub").textContent = "Multiple choice and/or True/False (up to 53).";
+        renderTestShell();
+      } else if(view === "questions"){
+        $("mainTitle").textContent = "Questions";
+        $("mainSub").textContent = "Hint 1 → Hint 4. Reveal anytime.";
+        renderQuestions(true);
+      } else {
+        $("mainTitle").textContent = "Manage Cards";
+        $("mainSub").textContent = "Search, filter, add/edit, export/import.";
+        renderManage();
+      }
+
+      updateBadges();
+    }
+
+    /****************
+     * FLASHCARDS
+     ****************/
+    function updateProgressBar(){
+      const total = filteredIndexes.length;
+      $("totalCount").textContent = String(total);
+      if(total === 0){
+        $("knownCount").textContent = "0";
+        $("progressBar").style.width = "0%";
+        return;
+      }
+      const known = filteredIndexes.reduce((acc, idx) => acc + (isKnown(cards[idx]) ? 1 : 0), 0);
+      $("knownCount").textContent = String(known);
+      $("progressBar").style.width = `${Math.round((known/total)*100)}%`;
+    }
+
+    function renderFlashcard(){
+      computeFiltered();
+      const total = filteredIndexes.length;
+      const c = currentCard();
+
+      showingBack = false;
+      $("flipInner").classList.remove("is-flipped");
+
+      if(!c){
+        $("fcFront").textContent = "No cards match your Study Settings.";
+        $("fcBack").textContent = "";
+        $("fcBadge").textContent = "Card 0 / 0";
+        $("knownToggle").checked = false;
+        $("categoryTag").textContent = "Category: —";
+        $("knownTag").textContent = "Status: —";
+        $("knownTag").className = "tag";
+        updateProgressBar();
+        return;
+      }
+
+      $("fcFront").textContent = c.term;
+      $("fcBack").textContent = c.definition;
+      $("fcBadge").textContent = `Card ${currentPos + 1} / ${total}`;
+
+      $("categoryTag").textContent = `Category: ${c.category}`;
+      const k = isKnown(c);
+      $("knownToggle").checked = k;
+      $("knownTag").textContent = `Status: ${k ? "Known" : "Unknown"}`;
+      $("knownTag").className = "tag " + (k ? "good" : "bad");
+
+      updateProgressBar();
+    }
+
+    function flipCard(force=null){
+      const c = currentCard();
+      if(!c) return;
+      if(force === null) showingBack = !showingBack;
+      else showingBack = !!force;
+      $("flipInner").classList.toggle("is-flipped", showingBack);
+    }
+
+    function nextCard(){
+      if(filteredIndexes.length === 0) return;
+      currentPos = (currentPos + 1) % filteredIndexes.length;
+      renderFlashcard();
+    }
+    function prevCard(){
+      if(filteredIndexes.length === 0) return;
+      currentPos = (currentPos - 1 + filteredIndexes.length) % filteredIndexes.length;
+      renderFlashcard();
+    }
+    function shuffleFiltered(){
+      computeFiltered();
+      for(let i = filteredIndexes.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [filteredIndexes[i], filteredIndexes[j]] = [filteredIndexes[j], filteredIndexes[i]];
+      }
+      currentPos = 0;
+      renderFlashcard();
+    }
+
+    /***************
+     * PRACTICE TEST
+     ***************/
+    function renderTestShell(){
+      $("testArea").innerHTML = "";
+      $("testResult").style.display = "none";
+      testQuestions = [];
+      testGraded = false;
+    }
+
+    function getDeckItems(){
+      computeFiltered();
+      return filteredIndexes.map(i => ({ card: cards[i], idx: i }));
+    }
+
+    function pickRandom(arr, n){
+      const copy = arr.slice();
+      for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0, Math.min(n, copy.length));
+    }
+
+    function buildMCQ(deckItems, count){
+      const pool = deckItems.filter(x => x.card.term && x.card.definition);
+      const picked = pickRandom(pool, count);
+      const allDefs = pool.map(x => x.card.definition);
+
+      return picked.map(({card, idx}, qi) => {
+        const correct = card.definition;
+        const distractors = pickRandom(allDefs.filter(d => d !== correct), 3);
+        const choices = pickRandom([correct, ...distractors], 4);
+        return {
+          type:"mcq",
+          label:`Q${qi+1}`,
+          prompt:`What is the best definition of: "${card.term}"?`,
+          choices,
+          correctIndex: choices.indexOf(correct),
+          selectedIndex: null,
+          cardIndex: idx
+        };
+      });
+    }
+
+    function buildTF(deckItems, count){
+      const pool = deckItems.filter(x => x.card.definition);
+      const picked = pickRandom(pool, count);
+
+      return picked.map(({card, idx}, qi) => {
+        const makeFalse = Math.random() < 0.5;
+        let statement = card.definition;
+        let answer = true;
+
+        if(makeFalse && pool.length > 1){
+          const other = pickRandom(pool.filter(x => x.idx !== idx), 1)[0];
+          statement = other.card.definition;
+          answer = false;
+        }
+
+        return {
+          type:"tf",
+          label:`Q${qi+1}`,
+          prompt: statement,
+          choices:["True","False"],
+          correctIndex: answer ? 0 : 1,
+          selectedIndex: null,
+          cardIndex: idx
+        };
+      });
+    }
+
+    function startTest(){
+      const requested = parseInt($("testCount").value, 10);
+      const kind = $("testType").value;
+
+      const deckItems = getDeckItems();
+      $("testArea").innerHTML = "";
+      $("testResult").style.display = "none";
+      testGraded = false;
+
+      if(deckItems.length === 0){
+        $("testArea").innerHTML = `<div class="q"><div class="prompt">No cards match your Study Settings.</div></div>`;
+        testQuestions = [];
+        return;
+      }
+
+      const realCount = Math.min(requested, deckItems.length);
+
+      let qs = [];
+      if(kind === "mcq") qs = buildMCQ(deckItems, realCount);
+      else if(kind === "tf") qs = buildTF(deckItems, realCount);
+      else {
+        const half = Math.floor(realCount/2);
+        const mcq = buildMCQ(deckItems, realCount - half);
+        const tf  = buildTF(deckItems, half);
+        qs = pickRandom([...mcq, ...tf], realCount);
+        qs.forEach((q,i)=> q.label = `Q${i+1}`);
+      }
+
+      testQuestions = qs;
+      renderTestQuestions();
+
+      if(realCount < requested){
+        const note = document.createElement("div");
+        note.className = "footer-note";
+        note.textContent = `You asked for ${requested}, but only ${deckItems.length} cards match filters, so this test uses ${realCount}.`;
+        $("testArea").prepend(note);
+      }
+    }
+
+    function renderTestQuestions(){
+      const container = $("testArea");
+      testQuestions.forEach((q, i) => {
+        const el = document.createElement("div");
+        el.className = "q";
+        el.dataset.qindex = String(i);
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.innerHTML = `<span>${q.label} • ${q.type.toUpperCase()}</span><span>Card #${q.cardIndex+1}</span>`;
+
+        const prompt = document.createElement("div");
+        prompt.className = "prompt";
+        prompt.textContent = q.prompt;
+
+        const choices = document.createElement("div");
+        choices.className = "choices";
+
+        q.choices.forEach((text, ci) => {
+          const ch = document.createElement("div");
+          ch.className = "choice";
+          ch.textContent = text;
+          ch.addEventListener("click", () => {
+            if(testGraded) return;
+            q.selectedIndex = ci;
+            choices.querySelectorAll(".choice").forEach((node, idx) => {
+              node.classList.toggle("selected", idx === ci);
+            });
+          });
+          choices.appendChild(ch);
+        });
+
+        el.appendChild(meta);
+        el.appendChild(prompt);
+        el.appendChild(choices);
+        container.appendChild(el);
+      });
+    }
+
+    function gradeTest(){
+      if(testQuestions.length === 0) return;
+      testGraded = true;
+
+      let correct = 0;
+      testQuestions.forEach((q, i) => {
+        const qEl = document.querySelector(`.q[data-qindex="${i}"]`);
+        const nodes = Array.from(qEl.querySelectorAll(".choice"));
+
+        nodes.forEach((node, idx) => {
+          node.classList.remove("correct","wrong");
+          if(idx === q.correctIndex) node.classList.add("correct");
+          if(q.selectedIndex !== null && idx === q.selectedIndex && q.selectedIndex !== q.correctIndex){
+            node.classList.add("wrong");
+          }
+        });
+
+        if(q.selectedIndex === q.correctIndex) correct++;
+      });
+
+      const total = testQuestions.length;
+      const pct = Math.round((correct/total)*100);
+      $("scoreLine").textContent = `Score: ${correct} / ${total} (${pct}%)`;
+      $("scoreDetail").textContent = pct >= 80 ? "Nice work" : pct >= 60 ? "Keep going" : "More review needed";
+      $("testResult").style.display = "block";
+      $("testResult").scrollIntoView({behavior:"smooth", block:"start"});
+    }
+
+    /***********************
+     * QUESTIONS GAME — CLEAN HINTS (NO clue words, NO blanks, NO term in hints)
+     ***********************/
+    function escapeRegExp(s){
+      return String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function generalizeYears(text){
+      // Avoid easy giveaways: 1812 -> 1810s
+      return String(text || "").replace(/\b(1[0-9]{3}|20[0-9]{2})\b/g, (m) => {
+        const year = parseInt(m, 10);
+        const decade = Math.floor(year / 10) * 10;
+        return `${decade}s`;
+      });
+    }
+
+    function normalizeSentence(s){
+      let t = String(s || "").replace(/\s+/g, " ").trim();
+      t = t.replace(/^[,;:\-–—\s]+/, "");
+      t = t.replace(/\s+([,.;:!?])/g, "$1");
+      if(!t) return "";
+      if(!/[.!?]$/.test(t)) t += ".";
+      t = t.charAt(0).toUpperCase() + t.slice(1);
+      return t;
+    }
+
+    function guessType(card){
+      const t = String(card.term || "").toLowerCase();
+      const d = String(card.definition || "").toLowerCase();
+      const has = (s) => t.includes(s) || d.includes(s);
+
+      if(has("war") || has("battle") || has("revolution") || has("riot") || has("conflict") || has("offensive")) return "event";
+      if(has("poem") || has("musical") || has("epic") || has("artwork") || has("painting")) return "work";
+      if(has("city") || has("region") || has("island") || has("capital") || has("basin")) return "place";
+      if(has("policy") || has("program") || has("organization") || has("alliance") || has("regime")) return "concept";
+      if(has("president") || has("prime minister") || has("leader") || has("philosopher") || has("economist") || has("explorer") || has("emperor") || has("king")) return "person";
+      return "topic";
+    }
+
+    function typeStarter(type){
+      if(type === "person") return "This is a person who";
+      if(type === "event") return "This is an event where";
+      if(type === "place") return "This is a place that";
+      if(type === "work") return "This is a work that";
+      if(type === "concept") return "This is an idea or policy that";
+      return "This is something that";
+    }
+
+    function splitClues(text){
+      // Break definition into usable, grammatical chunks and remove fragments like "and U."
+      const raw = String(text || "")
+        .replace(/\s+/g, " ")
+        .split(/[.;–—]/)
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      const chunks = [];
+      for(const p of raw){
+        const parts = p.split(",").map(s => s.trim()).filter(Boolean);
+        if(parts.length > 1) chunks.push(...parts);
+        else chunks.push(p);
+      }
+
+      return chunks
+        .map(normalizeSentence)
+        .filter(Boolean)
+        .filter(s => s.length >= 24)
+        .filter(s => !/^(And|Or|But)\b/.test(s))
+        .filter(s => !/\b[A-Z]\.$/.test(s))
+        .filter(s => /[a-zA-Z]{3,}/.test(s));
+    }
+
+    function buildHints(card){
+      const type = guessType(card);
+      const starter = typeStarter(type);
+
+      // Start from definition, soften exact years.
+      let safe = generalizeYears(card.definition || "");
+      safe = normalizeSentence(safe);
+
+      // Do NOT show the term in hints (but do NOT use blanks).
+      const noun =
+        type === "person" ? "this person" :
+        type === "event"  ? "this event"  :
+        type === "place"  ? "this place"  :
+        type === "work"   ? "this work"   :
+        type === "concept"? "this idea"   :
+        "this topic";
+
+      const term = String(card.term || "").trim();
+      if(term){
+        // Replace full term
+        safe = safe.replace(new RegExp(escapeRegExp(term), "gi"), noun);
+
+        // Replace long words from the term so "Brexit refers to..." becomes "this topic refers to..."
+        const words = term.split(/[\s–—-]+/).map(w => w.trim()).filter(w => w.length >= 5);
+        for(const w of words){
+          safe = safe.replace(new RegExp(`\\b${escapeRegExp(w)}\\b`, "gi"), noun);
+        }
+      }
+
+      safe = normalizeSentence(safe);
+      const chunks = splitClues(safe);
+
+      // Hint 1 is less direct (prefer chunk #2), then gets clearer.
+      const c1 = chunks[1] || chunks[0] || safe;
+      const c2 = chunks[2] || chunks[1] || chunks[0] || safe;
+      const c3 = chunks[0] || safe;
+
+      // Hint 4: full definition trimmed for readability.
+      let c4 = String(safe).replace(/\s+/g, " ").trim();
+      if(c4.length > 260) c4 = c4.slice(0, 260).trim() + "…";
+      c4 = normalizeSentence(c4);
+
+      return [
+        normalizeSentence(`${starter} ${c1}`),
+        normalizeSentence(`${starter} ${c2}`),
+        normalizeSentence(`${starter} ${c3}`),
+        normalizeSentence(`${starter} ${c4}`)
+      ];
+    }
+
+    function initQOrder(){
+      qOrder = cards.map((_, idx) => idx); // ALWAYS ALL TERMS
+      qPos = 0;
+      qHintIndex = 0;
+      qRevealed = false;
+    }
+
+    function shuffleArray(arr){
+      for(let i = arr.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function currentQCard(){
+      if(qOrder.length === 0) return null;
+      return cards[qOrder[qPos]];
+    }
+
+    function renderQuestions(reset=false){
+      if(reset){
+        qHintIndex = 0;
+        qRevealed = false;
+        $("answerBox").style.display = "none";
+      }
+
+      const total = qOrder.length;
+      const c = currentQCard();
+
+      if(!c){
+        $("qBadge").textContent = "Item 0 / 0";
+        $("hintStep").textContent = "Hint 1 of 4";
+        $("hintBox").textContent = "No cards in deck.";
+        $("answerBox").style.display = "none";
+        return;
+      }
+
+      const hints = buildHints(c);
+
+      $("qBadge").textContent = `Item ${qPos + 1} / ${total}`;
+      $("hintStep").textContent = `Hint ${qHintIndex + 1} of 4`;
+      $("hintBox").textContent = hints[qHintIndex];
+
+      if(qRevealed){
+        $("answerBox").style.display = "block";
+        $("ansTerm").textContent = c.term;
+        $("ansDef").textContent = c.definition;
+      } else {
+        $("answerBox").style.display = "none";
+      }
+    }
+
+    function nextHint(){
+      if(qOrder.length === 0) return;
+      qHintIndex = Math.min(3, qHintIndex + 1);
+      renderQuestions(false);
+    }
+
+    function revealAnswer(){
+      const c = currentQCard();
+      if(!c) return;
+      qRevealed = true;
+      $("answerBox").style.display = "block";
+      $("ansTerm").textContent = c.term;
+      $("ansDef").textContent = c.definition;
+    }
+
+    function nextItem(){
+      if(qOrder.length === 0) return;
+      qPos = (qPos + 1) % qOrder.length;
+      qHintIndex = 0;
+      qRevealed = false;
+      renderQuestions(true);
+    }
+
+    function resetQuestions(){
+      qPos = 0;
+      qHintIndex = 0;
+      qRevealed = false;
+      renderQuestions(true);
+    }
+
+    function shuffleQuestions(){
+      if(qOrder.length <= 1) return;
+      shuffleArray(qOrder);
+      qPos = 0;
+      qHintIndex = 0;
+      qRevealed = false;
+      renderQuestions(true);
+    }
+
+    /*****************
+     * MANAGE
+     *****************/
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+
+    function populateCategorySelects(){
+      const cats = getCategories();
+      const sc = $("studyCategory");
+      const cf = $("categoryFilter");
+
+      const prevSC = sc.value || "all";
+      const prevCF = cf.value || "all";
+
+      sc.innerHTML = `<option value="all">All</option>` + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+      cf.innerHTML = `<option value="all">All</option>` + cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+
+      sc.value = cats.includes(prevSC) ? prevSC : "all";
+      cf.value = cats.includes(prevCF) ? prevCF : "all";
+    }
+
+    function renderManage(){
+      populateCategorySelects();
+
+      const query = ($("searchInput").value || "").trim().toLowerCase();
+      const cat = $("categoryFilter").value;
+      const kf = $("knownFilter").value;
+
+      const items = cards
+        .map((c, idx) => ({c, idx}))
+        .filter(({c}) => cat === "all" ? true : c.category === cat)
+        .filter(({c}) => {
+          if(kf === "all") return true;
+          return kf === "known" ? isKnown(c) : !isKnown(c);
+        })
+        .filter(({c}) => {
+          if(!query) return true;
+          return (c.term + " " + c.definition).toLowerCase().includes(query);
+        });
+
+      const list = $("listArea");
+      list.innerHTML = "";
+
+      if(items.length === 0){
+        list.innerHTML = `<div class="q"><div class="prompt">No matches.</div></div>`;
+        return;
+      }
+
+      items.slice(0,140).forEach(({c}) => {
+        const box = document.createElement("div");
+        box.className = "q";
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.innerHTML = `<span>${escapeHtml(c.category)}</span><span>${isKnown(c) ? "Known" : "Unknown"}</span>`;
+
+        const prompt = document.createElement("div");
+        prompt.className = "prompt";
+        prompt.innerHTML = `<strong>${escapeHtml(c.term)}</strong><div class="mini" style="margin-top:6px;white-space:pre-wrap">${escapeHtml(c.definition)}</div>`;
+
+        box.appendChild(meta);
+        box.appendChild(prompt);
+        list.appendChild(box);
+      });
+    }
+
+    function clearForm(){
+      $("addCategory").value = "";
+      $("addTerm").value = "";
+      $("addDef").value = "";
+    }
+
+    function saveCardFromForm(){
+      const cat = $("addCategory").value.trim();
+      const term = $("addTerm").value.trim();
+      const def = $("addDef").value.trim();
+      if(!cat || !term || !def){ alert("Fill Category, Term, and Definition."); return; }
+
+      const existingIndex = cards.findIndex(c => c.term === term);
+      if(existingIndex >= 0){
+        const old = cards[existingIndex];
+        const wasKnown = isKnown(old);
+        cards[existingIndex] = { category: cat, term, definition: def };
+        if(wasKnown){
+          knownSet.delete(cardKey(old));
+          knownSet.add(cardKey(cards[existingIndex]));
+          saveProgress();
+        }
+      } else {
+        cards.push({ category: cat, term, definition: def });
+      }
+
+      saveDeck();
+      populateCategorySelects();
+      computeFiltered();
+      renderManage();
+      renderFlashcard();
+
+      initQOrder();
+      renderQuestions(true);
+
+      clearForm();
+    }
+
+    function deleteCardByTerm(){
+      const term = $("addTerm").value.trim();
+      if(!term){ alert("Type the exact Term to delete."); return; }
+      const idx = cards.findIndex(c => c.term === term);
+      if(idx < 0){ alert("No card found with that exact Term."); return; }
+
+      const c = cards[idx];
+      knownSet.delete(cardKey(c));
+      cards.splice(idx, 1);
+
+      saveDeck(); saveProgress();
+      populateCategorySelects();
+      computeFiltered();
+      renderManage();
+      renderFlashcard();
+
+      initQOrder();
+      renderQuestions(true);
+
+      clearForm();
+    }
+
+    function exportJSON(){
+      const payload = { version:10, exportedAt:new Date().toISOString(), cards, knownKeys:Array.from(knownSet) };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "history-levelup-deck.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJSONFile(file){
+      const reader = new FileReader();
+      reader.onload = () => {
+        try{
+          const data = JSON.parse(reader.result);
+          if(!data || !Array.isArray(data.cards)) throw new Error("Invalid JSON format.");
+          cards = data.cards;
+          knownSet = new Set(Array.isArray(data.knownKeys) ? data.knownKeys : []);
+          saveDeck(); saveProgress();
+
+          populateCategorySelects();
+          computeFiltered();
+          renderManage();
+          renderFlashcard();
+
+          initQOrder();
+          renderQuestions(true);
+
+          alert("Imported successfully!");
+        } catch(e){
+          alert("Import failed: " + e.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    /************
+     * EVENTS
+     ************/
+    function bindEvents(){
+      document.querySelectorAll(".tab").forEach(btn => {
+        btn.addEventListener("click", () => setView(btn.dataset.view));
+      });
+
+      // Flashcards
+      $("flipBtn").addEventListener("click", () => flipCard());
+      $("fcStage").addEventListener("click", () => flipCard());
+      $("prevBtn").addEventListener("click", prevCard);
+      $("nextBtn").addEventListener("click", nextCard);
+      $("shuffleBtn").addEventListener("click", shuffleFiltered);
+
+      $("knownToggle").addEventListener("change", (e) => {
+        const c = currentCard();
+        if(!c) return;
+        setKnown(c, e.target.checked);
+        renderFlashcard();
+        renderManage();
+      });
+
+      $("resetProgressBtn").addEventListener("click", () => {
+        if(confirm("Reset known/unknown progress?")){
+          knownSet = new Set();
+          saveProgress();
+          renderFlashcard();
+          renderManage();
+        }
+      });
+
+      // Sidebar filters
+      $("studyCategory").addEventListener("change", (e) => {
+        studyCategory = e.target.value;
+        currentPos = 0;
+        renderFlashcard();
+      });
+      $("studyScope").addEventListener("change", (e) => {
+        studyScope = e.target.value;
+        currentPos = 0;
+        renderFlashcard();
+      });
+
+      $("jumpRandomBtn").addEventListener("click", () => {
+        computeFiltered();
+        if(filteredIndexes.length === 0) return;
+        currentPos = Math.floor(Math.random() * filteredIndexes.length);
+        renderFlashcard();
+      });
+      $("showAnswerBtn").addEventListener("click", () => flipCard(true));
+
+      // Test
+      $("startTestBtn").addEventListener("click", startTest);
+      $("newSetBtn").addEventListener("click", startTest);
+      $("gradeTestBtn").addEventListener("click", gradeTest);
+
+      // Questions
+      $("nextHintBtn").addEventListener("click", nextHint);
+      $("revealBtn").addEventListener("click", revealAnswer);
+      $("nextItemBtn").addEventListener("click", nextItem);
+      $("shuffleQBtn").addEventListener("click", shuffleQuestions);
+      $("resetQBtn").addEventListener("click", resetQuestions);
+
+      // Manage
+      $("searchInput").addEventListener("input", renderManage);
+      $("categoryFilter").addEventListener("change", renderManage);
+      $("knownFilter").addEventListener("change", renderManage);
+
+      $("saveCardBtn").addEventListener("click", saveCardFromForm);
+      $("clearFormBtn").addEventListener("click", clearForm);
+      $("deleteCardBtn").addEventListener("click", deleteCardByTerm);
+
+      $("exportBtn").addEventListener("click", exportJSON);
+      $("importBtn").addEventListener("click", () => $("importFile").click());
+      $("importFile").addEventListener("change", (e) => {
+        const f = e.target.files?.[0];
+        if(f) importJSONFile(f);
+        e.target.value = "";
+      });
+
+      $("restoreDeckBtn").addEventListener("click", () => {
+        if(confirm("Restore the default 54-card deck? This will replace your saved deck and clear Known progress.")){
+          restoreDefaultDeck();
+        }
+      });
+
+      // Keyboard shortcuts (Flashcards)
+      window.addEventListener("keydown", (e) => {
+        const active = document.querySelector(".tab.active")?.dataset.view;
+        if(active !== "flashcards") return;
+
+        if(e.code === "Space"){ e.preventDefault(); flipCard(); }
+        else if(e.code === "ArrowRight"){ nextCard(); }
+        else if(e.code === "ArrowLeft"){ prevCard(); }
+        else if(e.key.toLowerCase() === "k"){
+          const c = currentCard();
+          if(!c) return;
+          const val = !isKnown(c);
+          setKnown(c, val);
+          $("knownToggle").checked = val;
+          renderFlashcard();
+          renderManage();
+        }
+      });
+    }
+
+    /************
+     * INIT
+     ************/
+    (function init(){
+      loadAll();
+      populateCategorySelects();
+
+      $("studyCategory").value = "all";
+      $("studyScope").value = "all";
+
+      computeFiltered();
+      initQOrder();
+
+      updateBadges();
+      bindEvents();
+      setView("flashcards");
+      renderManage();
+      renderQuestions(true);
+    })();
+  </script>
+</body>
+</html>
